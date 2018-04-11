@@ -1,8 +1,8 @@
 from telegram.ext import Updater, MessageHandler, Filters, CommandHandler
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
+import time
 
-reply_keyboard = [['/address', '/phone'],
-                  ['/site', '/work_time']]
+reply_keyboard = [['/calibration']]
 markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False)
 
 
@@ -10,14 +10,21 @@ def data(bot, update):
     update.message.reply_text(time.asctime())
 
 
-def echo(bot, update):
-    mess = update.message.text
-    update.message.reply_text(mess[::-1])
+def echo(bot, update, chat_data):
+    if len(chat_data) != 0:
+        mess = update.message.text
+        update.message.reply_text(mess[::-1])
+
+def calibration(bot, update, chat_data):
+    if len(chat_data) == 0:
+        reply_keyboard = [['/calibration']]
+        markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False)
+        update.message.reply_text('Какой климат вам больше нравиться?', reply_markup=markup)
 
 
 def start(bot, update):
     update.message.reply_text(
-        "Привет! Я эхо-бот. Напишите мне что-нибудь, и я пришлю это назад! Попробуй ввести своё имя и посмотри что будет!",
+        "Привет! Я бот-помошник путешествий, я помогу тебе выбрать место куда можно поехать отдохнуть! Чтобы узнать твои предпочтения я задам тебе пару вопросов, просто нажимай на вариант который тебе больше по душе. Для начала нажми /Calibration",
         reply_markup=markup)
 
 def close(bot, update):
@@ -52,13 +59,17 @@ def set_timer(bot, update, job_queue, chat_data, args):
 def main():
     updater = Updater("568556775:AAHsW06Q7g6qd-K7FQS3d5XBk4xGTqxArc8")
     dp = updater.dispatcher
-    text_handler = MessageHandler(Filters.text, echo)
+    text_handler = MessageHandler(Filters.text, echo, pass_chat_data=True)
+    text_handler = MessageHandler(Filters.text, calibration, pass_chat_data=True)
 
     dp.add_handler(CommandHandler("data", data))
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("close", close))
     dp.add_handler(CommandHandler("set_timer", set_timer, pass_job_queue=True, pass_chat_data=True, pass_args=True))
     dp.add_handler(CommandHandler("unset_timer", unset_timer, pass_chat_data=True))
+
+    dp.add_handler(CommandHandler("calibration", calibration, pass_chat_data=True))
+
     dp.add_handler(text_handler)
 
     updater.start_polling()
