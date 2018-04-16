@@ -4,7 +4,10 @@ import json
 import sys
 import requests
 import time
+
+# Copyright 2013 Jonathan Goldsmith
 import wikipedia
+
 
 wikipedia.set_lang('ru')
 
@@ -160,7 +163,7 @@ def echo(bot, update, chat_data):
 def calibration(bot, update, chat_data):
     print(update.message.text)
 
-    continuation = [['Получить помощь по путешествию'], ['Особенности страны'], ['Новая страна']]
+    continuation = [['Получить помощь по путешествию'], ['Новая страна']]
     continuation_markup = ReplyKeyboardMarkup(continuation, one_time_keyboard=True)
 
     help_chnge = [
@@ -251,7 +254,12 @@ def start(bot, update, job_queue, chat_data):
     reply_keyboard = [['Получить страну!']]
     markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False)
     update.message.reply_text(
-        "Привет! Я бот-помошник путешествий, я помогу тебе выбрать место куда можно поехать отдохнуть! Чтобы узнать твои предпочтения я задам тебе несколько вопросов, просто нажимай на вариант который тебе больше по душе. Для начала нажми:",
+        "Привет! Я бот-помошник путешествий, я помогу тебе выбрать место куда можно поехать отдохнуть! Чтобы узнать твои предпочтения я задам тебе несколько вопросов, просто нажимай на вариант который тебе больше по душе.\
+         Для начала нажми:",
+        reply_markup=markup)
+    update.message.reply_text(
+        "Привет! Я бот-помошник путешествий, я помогу тебе выбрать место куда можно поехать отдохнуть! Чтобы узнать твои предпочтения я задам тебе несколько вопросов, просто нажимай на вариант который тебе больше по душе.\
+         Для начала нажми:",
         reply_markup=markup)
 
 
