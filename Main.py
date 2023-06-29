@@ -1,5 +1,7 @@
-from telegram.ext import Updater, MessageHandler, Filters, CommandHandler
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
+
+from telegram.ext import Updater, MessageHandler, Filters, CommandHandler
+
 import json
 import sys
 import requests
@@ -280,6 +282,7 @@ def unset_timer(bot, update, chat_data):
 
 def main():
     updater = Updater("568556775:AAHsW06Q7g6qd-K7FQS3d5XBk4xGTqxArc8")
+
     dp = updater.dispatcher
 
     text_handler = MessageHandler(Filters.text, calibration, pass_chat_data=True)
